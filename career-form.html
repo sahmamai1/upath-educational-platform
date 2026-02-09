@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>UPath - วิเคราะห์อาชีพที่เหมาะกับคุณ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Prompt', sans-serif;
+      background: #f3f8ff;
+      color: #333;
+      margin: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+    h1, h2, h3 {
+      color: #2a6fdb;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .box {
+      background: white;
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+    }
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .btn {
+      display: block;
+      margin: 30px auto;
+      background-color: #2a6fdb;
+      color: white;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .progress-bar {
+      height: 16px;
+      background: #ddd;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      border-radius: 10px;
+    }
+    #results, #chartContainer {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>UPath 🎓</h1>
+    <p>ค้นหาคณะและสายงานที่เหมาะกับคุณ จากทักษะและความชอบ</p>
+  </div>
+
+  <div class="box">
+    <h2>🛠️ เลือกทักษะที่คุณมี</h2>
+    <div class="checkbox-grid" id="skills-list"></div>
+  </div>
+
+  <div class="box">
+    <h2>📋 คำถามเพิ่มเติม</h2>
+    <div id="question-list"></div>
+    <button class="btn" onclick="analyze()">วิเคราะห์อาชีพที่เหมาะกับคุณ</button>
+  </div>
+
+  <div class="box" id="results">
+    <h2>🎯 ผลลัพธ์ที่เหมาะกับคุณ</h2>
+    <div id="best-match"></div>
+  </div>
+
+  <div class="box" id="chartContainer">
+    <h2>📊 เปรียบเทียบอาชีพทั้งหมด</h2>
+    <canvas id="careerChart"></canvas>
+  </div>
+</div>
+
+<script>
+  const careerData = [
+    {
+      อาชีพ: "วิศวกรซอฟต์แวร์",
+      คณะ: "วิศวกรรมศาสตร์",
+      ทักษะ: ["Programming", "Algorithms", "Problem Solving"],
+      วิชาแนะนำ: ["การเขียนโปรแกรม", "คณิตศาสตร์"],
+      ทักษะเสริม: ["การทำงานเป็นทีม", "ความคิดเชิงระบบ"]
+    },
+    {
+      อาชีพ: "Data Scientist",
+      คณะ: "เทคโนโลยีสารสนเทศ",
+      ทักษะ: ["Python", "Data Analysis", "Statistics"],
+      วิชาแนะนำ: ["สถิติ", "วิทยาศาสตร์ข้อมูล"],
+      ทักษะเสริม: ["การสื่อสารข้อมูล", "ความแม่นยำ"]
+    },
+    {
+      อาชีพ: "นักการตลาด",
+      คณะ: "บริหารธุรกิจ",
+      ทักษะ: ["Communication", "Creativity", "Digital Marketing"],
+      วิชาแนะนำ: ["การตลาด", "จิตวิทยาผู้บริโภค"],
+      ทักษะเสริม: ["การพูดโน้มน้าว", "การวิเคราะห์กลยุทธ์"]
+    },
+    {
+      อาชีพ: "นักแปล",
+      คณะ: "ศิลปศาสตร์",
+      ทักษะ: ["Languages", "Writing", "Cultural Knowledge"],
+      วิชาแนะนำ: ["ภาษาศาสตร์", "วรรณกรรม"],
+      ทักษะเสริม: ["การใช้ภาษา", "การค้นคว้า"]
+    },
+    {
+      อาชีพ: "แพทย์",
+      คณะ: "แพทยศาสตร์",
+      ทักษะ: ["Biology", "Empathy", "Problem Solving"],
+      วิชาแนะนำ: ["ชีววิทยา", "กายวิภาคศาสตร์"],
+      ทักษะเสริม: ["การฟังอย่างตั้งใจ", "การตัดสินใจภายใต้แรงกดดัน"]
+    }
+  ];
+
+  const allSkills = [...new Set(careerData.flatMap(job => job.ทักษะ))];
+  const skillList = document.getElementById("skills-list");
+  allSkills.forEach(skill => {
+    const label = document.createElement("label");
+    label.innerHTML = `<input type="checkbox" value="${skill}"> ${skill}`;
+    skillList.appendChild(label);
+  });
+
+  const questions = [
+    "คุณรู้สึกตื่นเต้นกับเทคโนโลยีใหม่ๆ ไหม?",
+    "คุณสนใจสุขภาพและการดูแลผู้อื่นหรือไม่?",
+    "คุณชอบวิเคราะห์ข้อมูลหรือไม่?",
+    "คุณมีความคิดสร้างสรรค์ในการสื่อสารหรือโฆษณาไหม?",
+    "คุณชอบอ่านและแปลภาษาไหม?",
+    "คุณชอบเรียนคณิตศาสตร์หรือไม่?",
+    "คุณสนุกกับการเขียนโปรแกรมหรือออกแบบระบบหรือไม่?",
+    "คุณชอบพูดต่อหน้าคนมากกว่าทำงานหลังบ้านหรือไม่?",
+    "คุณต้องการทำงานกับผู้คนมากกว่าข้อมูลหรือไม่?",
+    "คุณชอบทำงานที่ต้องใช้ความอดทนและแม่นยำหรือไม่?"
+  ];
+
+  const qList = document.getElementById("question-list");
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <label>${i + 1}. ${q}</label>
+      <select>
+        <option value="yes">ใช่</option>
+        <option value="no">ไม่ใช่</option>
+        <option value="neutral">ไม่แน่ใจ</option>
+      </select>`;
+    qList.appendChild(div);
+  });
+
+  function analyze() {
+    const selectedSkills = Array.from(document.querySelectorAll("input[type=checkbox]:checked")).map(i => i.value);
+    const selectedAnswers = Array.from(document.querySelectorAll("select")).map(sel => sel.value);
+
+    const scores = careerData.map(career => {
+      const skillMatch = career.ทักษะ.filter(skill => selectedSkills.includes(skill)).length;
+      const answerBias = selectedAnswers.reduce((acc, val, idx) => {
+        if (val === "yes") {
+          if (career.ทักษะ.includes("Programming") && idx === 0) acc++;
+          if (career.ทักษะ.includes("Biology") && idx === 1) acc++;
+          if (career.ทักษะ.includes("Data Analysis") && idx === 2) acc++;
+          if (career.ทักษะ.includes("Digital Marketing") && idx === 3) acc++;
+          if (career.ทักษะ.includes("Languages") && idx === 4) acc++;
+        }
+        return acc;
+      }, 0);
+
+      const percent = Math.round(((skillMatch * 2) + answerBias) / ((career.ทักษะ.length * 2)) * 100);
+      return { ...career, match: percent };
+    }).sort((a, b) => b.match - a.match);
+
+    const best = scores[0];
+    document.getElementById("best-match").innerHTML = `
+      <h3>${best.อาชีพ}</h3>
+      <p><strong>คณะ:</strong> ${best.คณะ}</p>
+      <p><strong>ความเหมาะสม:</strong> ${best.match}%</p>
+      <div class="progress-bar"><div class="progress-fill" style="width:${best.match}%"></div></div>
+      <p><strong>แนะนำให้เรียน:</strong> ${best.วิชาแนะนำ.join(", ")}</p>
+      <p><strong>ควรพัฒนาทักษะเพิ่มเติม:</strong> ${best.ทักษะเสริม.join(", ")}</p>
+    `;
+
+    const ctx = document.getElementById("careerChart").getContext("2d");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: scores.map(x => x.อาชีพ),
+        datasets: [{
+          label: "ความเหมาะสม (%)",
+          data: scores.map(x => x.match),
+          backgroundColor: "#2a6fdb"
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true, max: 100 } }
+      }
+    });
+
+    document.getElementById("results").style.display = "block";
+    document.getElementById("chartContainer").style.display = "block";
+    window.scrollTo({ top: document.getElementById("results").offsetTop, behavior: "smooth" });
+  }
+</script>
+</body>
+</html>

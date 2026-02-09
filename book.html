@@ -1,0 +1,292 @@
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    // ถ้า login แล้ว → ไปหน้า tutors
+    header("Location: login.html");
+    exit();
+} 
+?>
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตอนกดวองเลย Step 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+        .calendar-day {
+            transition: all 0.2s ease;
+        }
+        .calendar-day:hover {
+            transform: scale(1.05);
+        }
+        .selected-date {
+            background: #fecaca !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="p-6">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            
+            
+            <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col lg:flex-row gap-8">
+                <!-- Left Panel - Steps -->
+                <div class="w-full lg:w-1/2">
+                    <div class="bg-blue-600 text-white p-3 rounded-t-lg">
+                        <h2 class="font-semibold">logo</h2>
+                    </div>
+                    
+                    <div class="bg-white border border-gray-200 p-6 rounded-b-lg">
+                        <h3 class="font-semibold mb-6">ขั้นตอนการชำระเงิน</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Step 1 -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-yellow-300 rounded border-2 border-yellow-400 flex items-center justify-center">
+                                    <div class="w-3 h-3 bg-yellow-600 rounded-full"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Step 1 เลือกวัน เวลาและรูปแบบในการเรียน</div>
+                                    <span class="bg-yellow-200 text-yellow-800 px-2 py-1 rounded text-xs">In progress</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Connecting line -->
+                            <div class="ml-4 w-px h-4 bg-gray-300"></div>
+                            
+                            <!-- Step 2 -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-gray-200 rounded border-2 border-gray-300 flex items-center justify-center">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-600">Step 2 ตัวเลือกการชำระเงิน</div>
+                                    <span class="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs">Pending</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Connecting line -->
+                            <div class="ml-4 w-px h-4 bg-gray-300"></div>
+                            
+                            <!-- Step 3 -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-gray-200 rounded border-2 border-gray-300 flex items-center justify-center">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-600">Step 3 ช่องทางการชำระเงิน</div>
+                                    <span class="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs">Pending</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Connecting line -->
+                            <div class="ml-4 w-px h-4 bg-gray-300"></div>
+                            
+                            <!-- Step 4 -->
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-gray-200 rounded border-2 border-gray-300 flex items-center justify-center">
+                                    <div class="w-2 h-2 bg-gray-400 rounded-full"></div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-600">Step 4 จองสำเร็จ</div>
+                                    <span class="bg-gray-200 text-gray-600 px-2 py-1 rounded text-xs">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Panel - Calendar -->
+                <div class="w-full lg:w-1/2">
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-semibold mb-6">Select a day</h3>
+                        
+                        <!-- Month Navigation -->
+                        <div class="flex justify-between items-center mb-4">
+                            <button id="prevMonth" class="p-2 hover:bg-gray-100 rounded">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                            </button>
+                            <h4 id="monthYear" class="text-lg font-semibold">January 2026</h4>
+                            <button id="nextMonth" class="p-2 hover:bg-gray-100 rounded">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <!-- Day headers -->
+                        <div class="grid grid-cols-7 gap-1 mb-4">
+                            <div class="text-center font-medium text-gray-600 p-2">MO</div>
+                            <div class="text-center font-medium text-gray-600 p-2">TU</div>
+                            <div class="text-center font-medium text-gray-600 p-2">WE</div>
+                            <div class="text-center font-medium text-gray-600 p-2">TH</div>
+                            <div class="text-center font-medium text-gray-600 p-2">FR</div>
+                            <div class="text-center font-medium text-gray-600 p-2">SA</div>
+                            <div class="text-center font-medium text-gray-600 p-2">SU</div>
+                        </div>
+                        
+                        <!-- Calendar grid -->
+                        <div id="calendarGrid" class="grid grid-cols-7 gap-1 mb-6">
+                            <!-- Calendar days will be generated by JavaScript -->
+                        </div>
+                        
+                        <!-- Navigation buttons -->
+                        <div class="flex justify-center mb-6">
+                            <button class="border-2 border-gray-800 px-6 py-2 rounded-full font-medium hover:bg-gray-800 hover:text-white transition-colors">
+                                Next
+                            </button>
+                        </div>
+                        
+                        <div class="flex justify-between">
+                            <button class="text-gray-600 hover:text-gray-800">Cancel</button>
+                            <button class="text-gray-800 font-medium hover:text-blue-600">Continue</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class DateSelector {
+            constructor() {
+                this.currentMonth = 0; // January = 0
+                this.currentYear = 2026;
+                this.selectedDate = null;
+                this.months = [
+                    'January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'
+                ];
+                
+                this.init();
+            }
+
+            init() {
+                this.renderCalendar();
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                document.getElementById('prevMonth').addEventListener('click', () => {
+                    this.currentMonth--;
+                    if (this.currentMonth < 0) {
+                        this.currentMonth = 11;
+                        this.currentYear--;
+                    }
+                    this.renderCalendar();
+                });
+
+                document.getElementById('nextMonth').addEventListener('click', () => {
+                    this.currentMonth++;
+                    if (this.currentMonth > 11) {
+                        this.currentMonth = 0;
+                        this.currentYear++;
+                    }
+                    this.renderCalendar();
+                });
+            }
+
+            getDaysInMonth(year, month) {
+                return new Date(year, month + 1, 0).getDate();
+            }
+
+            getFirstDayOfMonth(year, month) {
+                const firstDay = new Date(year, month, 1).getDay();
+                return firstDay === 0 ? 6 : firstDay - 1; // Convert Sunday (0) to 6, and adjust for Monday start
+            }
+
+            renderCalendar() {
+                const monthYearElement = document.getElementById('monthYear');
+                const calendarGrid = document.getElementById('calendarGrid');
+                
+                // Update month/year display
+                monthYearElement.textContent = `${this.months[this.currentMonth]} ${this.currentYear}`;
+                
+                // Clear previous calendar
+                calendarGrid.innerHTML = '';
+                
+                const daysInMonth = this.getDaysInMonth(this.currentYear, this.currentMonth);
+                const firstDay = this.getFirstDayOfMonth(this.currentYear, this.currentMonth);
+                const daysInPrevMonth = this.getDaysInMonth(this.currentYear, this.currentMonth - 1);
+                
+                // Previous month's trailing days
+                for (let i = firstDay - 1; i >= 0; i--) {
+                    const dayButton = this.createDayButton(daysInPrevMonth - i, 'prev-month');
+                    calendarGrid.appendChild(dayButton);
+                }
+                
+                // Current month's days
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayButton = this.createDayButton(day, 'current-month');
+                    calendarGrid.appendChild(dayButton);
+                }
+                
+                // Next month's leading days
+                const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+                const remainingCells = totalCells - (firstDay + daysInMonth);
+                for (let day = 1; day <= remainingCells; day++) {
+                    const dayButton = this.createDayButton(day, 'next-month');
+                    calendarGrid.appendChild(dayButton);
+                }
+            }
+
+            createDayButton(day, type) {
+                const button = document.createElement('button');
+                button.textContent = day;
+                button.className = 'calendar-day w-12 h-12 rounded hover:bg-blue-100 transition-colors';
+                
+                if (type === 'current-month') {
+                    button.className += ' text-gray-800 hover:bg-gray-100';
+                    button.addEventListener('click', () => {
+                        // Remove previous selection
+                        document.querySelectorAll('.selected-date').forEach(el => {
+                            el.classList.remove('selected-date');
+                        });
+                        
+                        // Add selection to clicked day
+                        button.classList.add('selected-date');
+                        this.selectedDate = day;
+                        
+                        console.log(`Selected date: ${day}/${this.currentMonth + 1}/${this.currentYear}`);
+                    });
+                } else {
+                    button.className += ' text-gray-400 hover:bg-gray-100';
+                    button.addEventListener('click', () => {
+                        if (type === 'prev-month') {
+                            this.currentMonth--;
+                            if (this.currentMonth < 0) {
+                                this.currentMonth = 11;
+                                this.currentYear--;
+                            }
+                        } else {
+                            this.currentMonth++;
+                            if (this.currentMonth > 11) {
+                                this.currentMonth = 0;
+                                this.currentYear++;
+                            }
+                        }
+                        this.renderCalendar();
+                    });
+                }
+                
+                return button;
+            }
+        }
+
+        // Initialize the date selector when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new DateSelector();
+        });
+    </script>
+</body>
+</html>

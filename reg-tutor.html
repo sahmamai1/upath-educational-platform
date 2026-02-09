@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครเป็นติวเตอร์</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: #F3F4F6;
+            min-height: 100vh;
+            padding: 20px;
+     
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: 30px;
+            /* border-left: 5px solid #007bff; */
+        }
+
+        .section h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            /* background: #c7c7c8; */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            font-weight: 500;
+            /* margin-bottom: 8px; */
+            font-size: 1rem;
+
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e1e8ed;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: #667eea;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 15px;
+            background: #f8f9ff;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            text-align: center;
+            color: #667eea;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover .file-upload-label {
+            background: #667eea;
+            color: white;
+        }
+
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e1e8ed;
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .form-container {
+                padding: 17px 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>สมัครเป็นติวเตอร์</h1>
+            <p>เข้าร่วมกับเราเพื่อแบ่งปันความรู้และสร้างอนาคตที่ดีให้กับนักเรียน</p>
+        </div>
+
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <form id="tutorForm">
+                <!-- พาร์ทที่ 1: ข้อมูลพื้นฐานและการศึกษา -->
+                <div class="section">
+                    <h2>
+                        <div class="section-icon">👤</div>
+                        แนะนำตัวและประวัติการศึกษา
+                    </h2>
+                    <p class="section-description">
+                        <strong>เป้าหมาย:</strong> ให้เราได้รู้จักตัวตนและพื้นฐานของคุณ เพื่อจับคู่กับนักเรียนที่เหมาะสม
+                    </p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="firstName">ชื่อ <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">นามสกุล <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nickname">ชื่อเล่น</label>
+                            <input type="text" id="nickname" name="nickname">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="age">อายุ <span class="required">*</span></label>
+                            <input type="number" id="age" name="age" min="18" max="100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">อีเมล <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="education">ระดับการศึกษา <span class="required">*</span></label>
+                            <select id="education" name="education" required>
+                                <option value="">เลือกระดับการศึกษา</option>
+                                <option value="ปริญญาตรี">ปริญญาตรี</option>
+                                <option value="ปริญญาโท">ปริญญาโท</option>
+                                <option value="ปริญญาเอก">ปริญญาเอก</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="university">มหาวิทยาลัย <span class="required">*</span></label>
+                            <input type="text" id="university" name="university" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="faculty">คณะ <span class="required">*</span></label>
+                            <input type="text" id="faculty" name="faculty" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="major">สาขา <span class="required">*</span></label>
+                            <input type="text" id="major" name="major" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="graduationYear">ปีที่จบการศึกษา</label>
+                            <input type="number" id="graduationYear" name="graduationYear" min="1990" max="2030">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience">ประสบการณ์สอน (ปี) <span class="required">*</span></label>
+                            <select id="experience" name="experience" required>
+                                <option value="">เลือกประสบการณ์</option>
+                                <option value="ไม่มีประสบการณ์">ไม่มีประสบการณ์</option>
+                                <option value="น้อยกว่า 1 ปี">น้อยกว่า 1 ปี</option>
+                                <option value="1-2 ปี">1-2 ปี</option>
+                                <option value="3-5 ปี">3-5 ปี</option>
+                                <option value="มากกว่า 5 ปี">มากกว่า 5 ปี</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>เคยสอนระดับไหนบ้าง (เลือกได้หลายข้อ)</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="level1" name="teachingLevels" value="ประถมศึกษา">
+                                    <label for="level1">ประถมศึกษา</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="level2" name="teachingLevels" value="มัธยมต้น">
+                                    <label for="level2">มัธยมต้น</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="level3" name="teachingLevels" value="มัธยมปลาย">
+                                    <label for="level3">มัธยมปลาย</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="level4" name="teachingLevels" value="ปริญญาตรี">
+                                    <label for="level4">ปริญญาตรี</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="level5" name="teachingLevels" value="ผู้ใหญ่">
+                                    <label for="level5">ผู้ใหญ่/อื่นๆ</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- พาร์ทที่ 2: ความเชี่ยวชาญในการสอน -->
+                <div class="section">
+                    <h2>
+                        <div class="section-icon">🎯</div>
+                        ทักษะการสอนและความถนัดของคุณ
+                    </h2>
+                    <p class="section-description">
+                        <strong>เป้าหมาย:</strong> วิเคราะห์ว่าคุณเหมาะกับกลุ่มผู้เรียนกลุ่มใดและสอนได้ดีในวิชาไหน
+                    </p>
+
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="subjects">รายวิชาที่สามารถสอนได้ <span class="required">*</span></label>
+                            <textarea id="subjects" name="subjects" placeholder="เช่น คณิตศาสตร์, ฟิสิกส์, เคมี, ภาษาอังกฤษ..." required></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>ถนัดสอนแนวไหน (เลือกได้หลายข้อ)</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="theory" name="teachingStyle" value="เน้นทฤษฎี">
+                                    <label for="theory">เน้นทฤษฎี</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="practical" name="teachingStyle" value="เน้นปฏิบัติ">
+                                    <label for="practical">เน้นปฏิบัติ</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="interactive" name="teachingStyle" value="มีเกมการสอน">
+                                    <label for="interactive">มีเกมการสอน</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="visual" name="teachingStyle" value="ใช้สื่อภาพ">
+                                    <label for="visual">ใช้สื่อภาพ</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="discussion" name="teachingStyle" value="แบบอภิปราย">
+                                    <label for="discussion">แบบอภิปราย</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="stepbystep" name="teachingStyle" value="สอนทีละขั้นตอน">
+                                    <label for="stepbystep">สอนทีละขั้นตอน</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>สอนได้เป็นภาษาใดบ้าง (เลือกได้หลายข้อ)</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="thai" name="languages" value="ภาษาไทย">
+                                    <label for="thai">ภาษาไทย</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="english" name="languages" value="ภาษาอังกฤษ">
+                                    <label for="english">ภาษาอังกฤษ</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="chinese" name="languages" value="ภาษาจีน">
+                                    <label for="chinese">ภาษาจีน</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="japanese" name="languages" value="ภาษาญี่ปุ่น">
+                                    <label for="japanese">ภาษาญี่ปุ่น</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="otherlang" name="languages" value="อื่นๆ">
+                                    <label for="otherlang">อื่นๆ</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>เคยใช้เครื่องมือออนไลน์ใดบ้าง (เลือกได้หลายข้อ)</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="zoom" name="onlineTools" value="Zoom">
+                                    <label for="zoom">Zoom</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="meet" name="onlineTools" value="Google Meet">
+                                    <label for="meet">Google Meet</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="teams" name="onlineTools" value="Microsoft Teams">
+                                    <label for="teams">Microsoft Teams</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="skype" name="onlineTools" value="Skype">
+                                    <label for="skype">Skype</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="line" name="onlineTools" value="Line">
+                                    <label for="line">Line</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="discord" name="onlineTools" value="Discord">
+                                    <label for="discord">Discord</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="equipment">อุปกรณ์ที่มีสำหรับการสอนออนไลน์</label>
+                            <textarea id="equipment" name="equipment" placeholder="เช่น กล้องเว็บแคม, ไมโครโฟน, กระดานออนไลน์, แท็บเล็ต..."></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>ช่องทางที่สะดวกในการติดต่อ/ส่งเอกสาร (เลือกได้หลายข้อ)</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="email-contact" name="contactChannels" value="อีเมล">
+                                    <label for="email-contact">อีเมล</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="line-contact" name="contactChannels" value="Line">
+                                    <label for="line-contact">Line</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="phone-contact" name="contactChannels" value="โทรศัพท์">
+                                    <label for="phone-contact">โทรศัพท์</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="facebook" name="contactChannels" value="Facebook">
+                                    <label for="facebook">Facebook</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="google-drive" name="contactChannels" value="Google Drive">
+                                    <label for="google-drive">Google Drive</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="portfolio">แนบคลิปแนะนำตัวหรือไฟล์โปรไฟล์ (ถ้ามี)</label>
+                            <div class="file-upload">
+                                <input type="file" id="portfolio" name="portfolio" accept="video/*,audio/*,.pdf,.doc,.docx" multiple>
+                                <label for="portfolio" class="file-upload-label">
+                                    📎 คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวางที่นี่
+                                    <br><small>รองรับ: วิดีโอ, เสียง, PDF, Word</small>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-section">
+                  
+                        <a href="index.php" type="submit" class="submit-btn">
+                            🚀 ส่งใบสมัคร
+                        
+                    </a>
+                    <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">
+                        เมื่อกดส่งแล้ว ทีมงานจะตรวจสอบข้อมูลและติดต่อกลับภายใน 3-5 วันทำการ
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Progress bar functionality
+        function updateProgress() {
+            const form = document.getElementById('tutorForm');
+            const formData = new FormData(form);
+            const totalFields = form.querySelectorAll('input[required], select[required], textarea[required]').length;
+            let filledFields = 0;
+
+            // Count required fields that are filled
+            form.querySelectorAll('input[required], select[required], textarea[required]').forEach(field => {
+                if (field.value.trim() !== '') {
+                    filledFields++;
+                }
+            });
+
+            // Count checkbox groups
+            const checkboxGroups = ['teachingLevels', 'teachingStyle', 'languages', 'onlineTools', 'contactChannels'];
+            checkboxGroups.forEach(groupName => {
+                const checked = form.querySelectorAll(`input[name="${groupName}"]:checked`);
+                if (checked.length > 0) {
+                    filledFields += 0.5; // Each group worth 0.5 points
+                }
+            });
+
+            const progress = Math.min((filledFields / (totalFields + 2.5)) * 100, 100); // +2.5 for checkbox groups
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // File upload display
+        document.getElementById('portfolio').addEventListener('change', function(e) {
+            const label = document.querySelector('.file-upload-label');
+            const files = e.target.files;
+            
+            if (files.length > 0) {
+                const fileNames = Array.from(files).map(file => file.name).join(', ');
+                label.innerHTML = `✅ เลือกไฟล์แล้ว: ${fileNames}`;
+                label.style.background = '#e8f5e8';
+                label.style.color = '#2d5a2d';
+            } else {
+                label.innerHTML = `📎 คลิกเพื่อเลือกไฟล์ หรือลากไฟล์มาวางที่นี่<br><small>รองรับ: วิดีโอ, เสียง, PDF, Word</small>`;
+            }
+        });
+
+        // Form submission
+        document.getElementById('tutorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect all form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Regular fields
+            for (let [key, value] of formData.entries()) {
+                if (data[key]) {
+                    if (Array.isArray(data[key])) {
+                        data[key].push(value);
+                    } else {
+                        data[key] = [data[key], value];
+                    }
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // Checkbox arrays
+            const checkboxGroups = ['teachingLevels', 'teachingStyle', 'languages', 'onlineTools', 'contactChannels'];
+            checkboxGroups.forEach(groupName => {
+                const checked = this.querySelectorAll(`input[name="${groupName}"]:checked`);
+                data[groupName] = Array.from(checked).map(cb => cb.value);
+            });
+            
+            // Show success message
+            alert('✅ ส่งใบสมัครเรียบร้อยแล้ว!\n\nขอบคุณที่สนใจเป็นติวเตอร์กับเรา\nทีมงานจะตรวจสอบข้อมูลและติดต่อกลับภายใน 3-5 วันทำการ');
+            
+            console.log('Form Data:', data);
+        });
+
+        // Add event listeners for progress tracking
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('change', updateProgress);
+            field.addEventListener('input', updateProgress);
+        });
+
+        // Initial progress update
+        updateProgress();
+
+        // Smooth scrolling animation
+        document.querySelectorAll('input, select, textarea').forEach(field => {
+            field.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+                this.parentElement.style.transition = 'transform 0.2s ease';
+            });
+            
+            field.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
