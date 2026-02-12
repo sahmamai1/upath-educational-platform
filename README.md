@@ -21,5 +21,5 @@ This project is a frontend prototype.
 Backend services and AI-based recommendation systems are planned for future development.
 
 ## Result
-![Vehicle detection and counting result](result_upath_demo)
+![upath-educational-platform result](result_upath_demo.png)
 
